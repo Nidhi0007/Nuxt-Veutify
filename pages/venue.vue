@@ -42,11 +42,11 @@
           :items="getCities"
           label="Select city"
           item-text="name"
-          v-model="city"
+          v-model="addVenue.city"
           item-key="_id"
           item-value="_id"
           return-object
-          @change="selectChange(city._id)"
+          @change="selectChange(addVenue.city._id)"
 
         ></v-select>
         
@@ -141,9 +141,9 @@ export default {
 showAddModal: false,
 isEdit:false,
       getCities:[],
-      city:"",
+      
       search:"",
-        addVenue:{name:"",phone:"",latitude:"",longitude:"",address:"",landmark:""},
+        addVenue:{city:"",name:"",phone:"",latitude:"",longitude:"",address:"",landmark:""},
         allVenue:[],
         headers: {
        
@@ -177,7 +177,7 @@ isEdit:false,
     })
   },
   selectChange(_id){
-    this.city=_id
+    this.addVenue.city=_id
 ;
   },
     add() {

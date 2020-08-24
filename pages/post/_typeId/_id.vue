@@ -2,7 +2,101 @@
     <div>
  
         <v-container>
+         <form>
+    <v-text-field
+      v-model="search"
+      :error-messages="nameErrors"
+      
+      label="Search"
+      
+    ></v-text-field>
+     
+    
+  </form>
+                  <v-row justify="center">
+    <v-dialog v-model="showAddModal" persistent max-width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          ADD Posts
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Posts</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Title*"  v-model="addPosts.title" @change="convertToSlug" required></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Slug" hint="example of helper text only on focus" v-model="addPosts.slug"></v-text-field>
+              </v-col>
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Short Description" hint="example of helper text only on focus" v-model="addPosts.shortDescription"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Guidelines" hint="example of helper text only on focus" v-model="addPosts.guidelines"></v-text-field>
+              </v-col>
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Long description" hint="example of helper text only on focus" v-model="addPosts.text"></v-text-field>
+              </v-col>
+          
+              <v-col cols="12">
+               <input type="file" @change="onFileSelected">
+              </v-col>
+             
+            <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Latitude" hint="example of helper text only on focus" v-model="location.latitude"></v-text-field>
+              </v-col>
+               
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="longitude" hint="example of helper text only on focus" v-model="location.longitudee"></v-text-field>
+              </v-col>
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Adress" hint="example of helper text only on focus" v-model="location.address"></v-text-field>
+              </v-col>
+              <v-container fluid>
+    <v-checkbox v-model="ways.walkingOnly" value="" :label="`Walkingonly`"></v-checkbox>
+    <v-checkbox v-model="ways.byBoat" value="" :label="`byBoat`"></v-checkbox>
+    <v-checkbox v-model="ways.byCar" value="" :label="`byCar`"></v-checkbox>
+    <v-checkbox v-model="ways.byPublicTransport" value="" :label="`byPublicTransport 2`"></v-checkbox>
+  </v-container>
+ 
+        <v-col class="d-flex" cols="12" sm="6">
+        <v-select 
+    outline 
+    label="Select Shop" 
+    :items="getCities" 
+    item-text="name" 
+    v-model="city"
+     item-key="_id"
+    item-value="_id"
+    return-object
+    @change="selectChange(city._id)"
+>
 
+</v-select>
+      </v-col>
+            </v-row>
+          </v-container>
+         
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="showAddModal = false">Close</v-btn>
+          <v-btn v-if="this.isEdit == false" color="blue darken-1" text @click="add()">ADD</v-btn>
+          <v-btn v-else color="blue darken-1" text @click="updateTask()">UPDATE</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 
             <v-flex xs12>
                 
