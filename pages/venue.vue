@@ -32,10 +32,24 @@
         <v-card-text>
           <v-container>
             <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Name*" v-model="addVenue.name"  required></v-text-field>
+               
+              </v-col>
               <v-col cols="12" sm="6" md="4">
-                  <select class="form-control" id="exampleFormControlSelect1" v-model="city" @change="selectChange">
-      <option v-for="datas in getCities" v-bind:key="datas._id" v-bind:value="datas._id">{{datas.name}}</option>
-        </select> 
+
+                        <v-select
+          :items="getCities"
+          label="Select city"
+          item-text="name"
+          v-model="city"
+          item-key="_id"
+          item-value="_id"
+          return-object
+          @change="selectChange(city._id)"
+
+        ></v-select>
+        
                
               </v-col>
               <v-col cols="12" sm="6" md="4">
@@ -52,7 +66,7 @@
              <v-text-field label="Longitude*" v-model="addVenue.longitude"  required></v-text-field>
               </v-col>
                 <v-col cols="12">
-             <v-text-field label="Longitude*" v-model="addVenue.longitude"  required></v-text-field>
+             <v-text-field label="Landmark*" v-model="addVenue.landmark"  required></v-text-field>
               </v-col>
             
             
@@ -81,6 +95,7 @@
     <template v-slot:default>
       <thead>
         <tr>
+        <th class="text-left">NAME</th>  
      <th class="text-left">CITIES</th>
                   <th class="text-left">PHONE</th>
               <th class="text-left">LATTITUDE</th>
@@ -97,6 +112,7 @@
       <tbody>
         <tr v-for="data in filteredPosts" v-bind:key="data._id">
  <td>{{data.name}}</td>
+ <td>{{data.city}}</td>
                 <td>{{data.phone}}</td>
                 <td>{{data.latitude}}</td>
                   <td>{{data.longitude}}</td>
@@ -124,7 +140,7 @@ export default {
     return{
 showAddModal: false,
 isEdit:false,
-      
+      getCities:[],
       city:"",
       search:"",
         addVenue:{name:"",phone:"",latitude:"",longitude:"",address:"",landmark:""},
@@ -138,6 +154,7 @@ isEdit:false,
   },
    mounted(){
     this.getVenue()
+    this.getAllCities()
   },
      computed: {
     filteredPosts() {
@@ -155,9 +172,13 @@ isEdit:false,
   getVenue(){
       this.$axios.get("/api/venues/")
     .then((response)=>{
-      console.log(response.data);
+      console.log(response.data)
       this.allVenue=response.data;
     })
+  },
+  selectChange(_id){
+    this.city=_id
+;
   },
     add() {
    

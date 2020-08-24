@@ -45,12 +45,22 @@
                   
                   required
                 ></v-text-field>
+           
               </v-col>
               <v-col cols="12">
-                <input class="text-black" type="file" @change="onFileSelected">
+                <input class="text-black" type="file" @change="onFileSelected" multiple>
               </v-col>
              
-            
+               <v-col cols="12" sm="6" md="4">
+                <v-text-field label="lattitude" hint="example of helper text only on focus" v-model="newCities.latitude"></v-text-field>
+              </v-col>
+                <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Longitude" hint="example of helper text only on focus" v-model="newCities.longitude"></v-text-field>
+              </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Pincode" hint="example of helper text only on focus" v-model="newCities.pincode"></v-text-field>
+              </v-col>
+              
               
             </v-row>
           </v-container>
@@ -123,7 +133,7 @@ export default {
       search: [],
       allCities: [],
       newCities: {
-        gallery: '',
+        gallery: [],
         name: '',
         slug: '',
         shortDescription: '',
@@ -191,7 +201,7 @@ export default {
         })
     },
 
-    convertToSlug() {
+    ConvertToSlug() {
       var theSlug = this.newCities.name
       theSlug = theSlug.toLowerCase()
       theSlug = theSlug.replace(/\s+/g, '-')

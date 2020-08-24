@@ -47,7 +47,7 @@
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <input class="text-black" type="file" @change="onFileSelected">
+                <input class="text-black" type="file" @change="onFileSelected" multiple>
               </v-col>
              
             
