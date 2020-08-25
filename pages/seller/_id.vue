@@ -2,8 +2,296 @@
     <div>
  
         <v-container>
+         <form>
+    <v-text-field
+      v-model="search"
+      :error-messages="nameErrors"
+      
+      label="Search"
+      
+    ></v-text-field>
+     
+    
+  </form>
+                  <v-row justify="center">
+    <v-dialog v-model="showAddModal" persistent max-width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          ADD Seller
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Sellers</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+        <v-col class="d-flex" cols="12" sm="6">
+                <v-select 
+    outline 
+    label="Select Venue" 
+    :items="allVenue" 
+    item-text="name" 
+    v-model="addSeller.venue"
+     item-key="_id"
+    item-value="_id"
+    return-object
+    @change="selectChangeVenue(addSeller.venue._id)"
+>
+
+</v-select>
+    </v-col>
+  
+ <v-col class="d-flex" cols="12" sm="6">
+        <v-select 
+    outline 
+    label="Select Duration" 
+    :items="allDuration" 
+    item-text="type" 
+    v-model="addSeller.duration"
+     item-key="_id"
+    item-value="_id"
+    return-object
+    @change="selectChangeDuration(addSeller.duration._id)"
+>
+
+</v-select>
+      </v-col>
+     
+       <v-col class="d-flex" cols="12" sm="6">
+        <v-select 
+    outline 
+    label="Select Timetype" 
+    :items="allTimeTypes" 
+    item-text="type" 
+    v-model="addSeller.timeType"
+     item-key="_id"
+    item-value="_id"
+    return-object
+    @change="selectChangetimeTypes(addSeller.timeType._id)"
+>
+
+</v-select>
+      </v-col>
+             
+             
+            
+              
+            </v-row>
+          </v-container>
+         
+        </v-card-text>
+       <!-- singleday -->
+          <v-row justify="center">
+             <div class="centered" v-if="this.addSeller.duration=='5f2158a2279bce0017e02b68'">
+     <form>
+    <v-row justify="center">
+    <v-date-picker v-model="addSeller.startDate">Start Date</v-date-picker>
+  </v-row>
+   <!-- From To time -->
+  <div class="centered" v-if=" '5f21414dddc8f60017961536'==this.addSeller.timeType">
+   <v-row justify="center">
+    <v-time-picker v-model="addSeller.startTime">Start Time</v-time-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-time-picker v-model="addSeller.endTime">End Time</v-time-picker>
+  </v-row>
+    </div>
+    <!-- Time slot-->
+       <div class="centered" v-if=" '5f2141cbddc8f60017961537'==this.addSeller.timeType">
+           <div class="col">
+            <label>Time Slots
+  <input-tag placeholder="Time slots" v-model="addSeller.slots" :limit="limit"></input-tag></label>
+</div>
+
+      
+</div>
+ <!-- From To time and time slot -->
+   <div class="centered" v-if=" '5f2141fcddc8f60017961538'==this.addSeller.timeType">
+           
+
+ <v-row justify="center">
+    <v-time-picker v-model="addSeller.startTime">Start Time</v-time-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-time-picker v-model="addSeller.endTime">End Time</v-time-picker>
+  </v-row>
 
 
+     
+           <div class="col">
+            <label>Time Slots
+  <input-tag placeholder="Time slots" v-model="addSeller.slots" :limit="limit"></input-tag></label>
+</div>
+
+      
+</div>
+ <v-spacer></v-spacer>
+ 
+     <v-btn color="blue darken-1" text @click="showAddModal = false">Close</v-btn>
+          <v-btn v-if="this.isEdit == false" color="blue darken-1" text @click="add()">ADD</v-btn>
+          <v-btn v-else color="blue darken-1" text @click="updateTask()">UPDATE</v-btn>
+  </form>
+  </div>
+   </v-row>
+
+   <!-- multipleday -->
+             <v-row justify="center">
+             <div class="centered" v-if="this.addSeller.duration=='5f21407dddc8f60017961533'">
+     <form>
+    <v-row justify="center">
+    <v-date-picker v-model="addSeller.startDate">Start Date</v-date-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-date-picker v-model="addSeller.endDate">End Date</v-date-picker>
+  </v-row>
+   <!-- From To time -->
+  <div class="centered" v-if=" '5f21414dddc8f60017961536'==this.addSeller.timeType">
+   <v-row justify="center">
+    <v-time-picker v-model="addSeller.startTime">Start Time</v-time-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-time-picker v-model="addSeller.endTime">End Time</v-time-picker>
+  </v-row>
+    </div>
+    <!-- Time slot-->
+       <div class="centered" v-if=" '5f2141cbddc8f60017961537'==this.addSeller.timeType">
+           <div class="col">
+            <label>Time Slots
+  <input-tag placeholder="Time slots" v-model="addSeller.slots" :limit="limit"></input-tag></label>
+</div>
+
+      
+</div>
+ <!-- From To time and time slot -->
+   <div class="centered" v-if=" '5f2141fcddc8f60017961538'==this.addSeller.timeType">
+           
+
+ <v-row justify="center">
+    <v-time-picker v-model="addSeller.startTime">Start Time</v-time-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-time-picker v-model="addSeller.endTime">End Time</v-time-picker>
+  </v-row>
+
+
+     
+           <div class="col">
+            <label>Time Slots
+  <input-tag placeholder="Time slots" v-model="addSeller.slots" :limit="limit"></input-tag></label>
+</div>
+
+      
+</div>
+ <v-spacer></v-spacer>
+ 
+     <v-btn color="blue darken-1" text @click="showAddModal = false">Close</v-btn>
+          <v-btn v-if="this.isEdit == false" color="blue darken-1" text @click="add()">ADD</v-btn>
+          <v-btn v-else color="blue darken-1" text @click="updateTask()">UPDATE</v-btn>
+  </form>
+  </div>
+   </v-row>
+
+    <!-- Repititive -->
+             <v-row justify="center">
+              <div class="centered" v-if="'5f2140a9ddc8f60017961534'==this.addSeller.duration">
+     <form>
+
+     <v-col class="d-flex" cols="12" sm="6">
+        <v-select 
+    outline 
+    label="Select Timetype" 
+    :items="allFrequency" 
+    item-text="type" 
+    v-model="addSeller.frequency"
+     item-key="_id"
+    item-value="_id"
+    return-object
+    @change="selectChangeFrequency(addSeller.frequency._id)"
+>
+
+</v-select>
+      </v-col>
+      
+      <div class="col" v-if="'5f1ffca845bc000017c0a3aa'==this.addSeller.frequency" >
+       <v-col class="d-flex" cols="12" sm="6">
+        <v-select 
+    outline 
+    label="Select Day" 
+    :items="whichDay" 
+    item-text="name" 
+    v-model="addSeller.whichDay"
+  
+    item-value="whichDay"
+    return-object
+    @change="selectChangeWhichDay(addSeller.whichDay.value)"
+>
+
+</v-select>
+      </v-col>
+      </div>
+      <div class="right" v-if="'5f20497dbe795400172ed18b'==this.addSeller.frequency">
+      <v-row justify="center">
+    <v-date-picker >Date Of Month</v-date-picker>
+  </v-row>
+
+    </div>
+    
+   <!-- From To time -->
+  <div class="centered" v-if=" '5f21414dddc8f60017961536'==this.addSeller.timeType">
+   <v-row justify="center">
+    <v-time-picker v-model="addSeller.startTime">Start Time</v-time-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-time-picker v-model="addSeller.endTime">End Time</v-time-picker>
+  </v-row>
+    </div>
+    <!-- Time slot-->
+       <div class="centered" v-if=" '5f2141cbddc8f60017961537'==this.addSeller.timeType">
+           <div class="col">
+            <label>Time Slots
+  <input-tag placeholder="Time slots" v-model="addSeller.slots" :limit="limit"></input-tag></label>
+</div>
+
+      
+</div>
+ <!-- From To time and time slot -->
+   <div class="centered" v-if=" '5f2141fcddc8f60017961538'==this.addSeller.timeType">
+           
+
+ <v-row justify="center">
+    <v-time-picker v-model="addSeller.startTime">Start Time</v-time-picker>
+  </v-row>
+  <v-row justify="center">
+    <v-time-picker v-model="addSeller.endTime">End Time</v-time-picker>
+  </v-row>
+
+
+     
+           <div class="col">
+            <label>Time Slots
+  <input-tag placeholder="Time slots" v-model="addSeller.slots" :limit="limit"></input-tag></label>
+</div>
+
+      
+</div>
+ <v-spacer></v-spacer>
+ 
+     <v-btn color="blue darken-1" text @click="showAddModal = false">Close</v-btn>
+          <v-btn v-if="this.isEdit == false" color="blue darken-1" text @click="add()">ADD</v-btn>
+          <v-btn v-else color="blue darken-1" text @click="updateTask()">UPDATE</v-btn>
+  </form>
+  </div>
+   </v-row>
+      </v-card>
+    </v-dialog>
+  </v-row>
             <v-flex xs12>
                 
                 
@@ -90,7 +378,7 @@ export default {
       
       allFrequency:[],
       frequency:"",
-      
+      whichDay:[{name:'Monday',value:'0'},{name:'Tuesday',value:'1'},{name:'Wednesday',value:'2'},{name:'Thursday',value:'3'},{name:'Friday',value:'4'},{name:'Saturday',value:'5'},{name:'Sunday',value:'6'}],
       addSeller:{id:"",activity:this.$route.params.id,venue:"",duration:"",timeType:"",frequency:"",whichDay:"",startDate:"",endDate:"",startTime:"",endTime:"",slots:[]},
       //addSeller:{activity:this.$route.params.id,venue:"",duration:"",timeType:"",frequency:"",whichDay:"",startTime:"",endTime:"",slots:[]},
       headers: {
@@ -153,20 +441,25 @@ export default {
       this.allFrequency=response.data;
     })
     },
-    selectChangeDuration(event){
-      this.addSeller.duration=event.target.value;
+    selectChangeDuration(_id){
+      this.addSeller.duration=_id;
       
   },
-  selectChangeVenue(event){
-   this.addSeller.venue=event.target.value;
+  selectChangeVenue(_id){
+   this.addSeller.venue=_id;
   
   },
-  selectChangetimeTypes(event){
-   this.addSeller.timeType=event.target.value;
+  selectChangetimeTypes(_id){
+   this.addSeller.timeType=_id;
   
   },
-  selectChangeFrequency(event){
-   this.addSeller.frequency=event.target.value;
+  selectChangeFrequency(_id){
+   this.addSeller.frequency=_id;
+  
+  },
+  selectChangeWhichDay(_id){
+    console.log(_id);
+   this.addSeller.whichDay=_id;
   
   },
     
@@ -176,6 +469,7 @@ export default {
       .then((response) => {
       console.log(response.data);
       this.allSellers=response.data;
+      
     })
     },
      add() {
@@ -298,7 +592,6 @@ export default {
       console.log(response.data);
      
     })
-
   },
   featured(id){
         this.$axios.get("/api/sellers/feature/"+id,this.headers)

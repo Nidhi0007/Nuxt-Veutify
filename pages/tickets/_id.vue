@@ -2,8 +2,84 @@
     <div>
  
         <v-container>
+         <form>
+    <v-text-field
+      v-model="search"
+      :error-messages="nameErrors"
+      
+      label="Search"
+      
+    ></v-text-field>
+     
+    
+  </form>
+   <v-row justify="center">
+    <v-dialog v-model="showAddModal" persistent max-width="600px">
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          ADD TICKETS
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Tickets</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Title*" v-model="addTicketSeller.title"  required></v-text-field>
+              </v-col>
+            
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field
+                v-model="addTicketSeller.shortDescription"
+                  label="shortDescription*"
+                  
+                  required
+                ></v-text-field>
+                <v-select
+          :items="getCities"
+          label="Select ticket type"
+          item-text="title"
+          v-model="addTicketSeller.ticketType"
+          item-key="_id"
+          item-value="_id"
+          return-object
+          @change="selectChange(addTicketSeller.ticketType._id)"
 
-
+        ></v-select>
+        
+              </v-col>
+           <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Inclusion*" v-model="addTicketSeller.inclusion" required></v-text-field>
+              </v-col>
+            
+             <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Exclusion*" v-model="addTicketSeller.exclusion" required></v-text-field>
+              </v-col>
+             
+            
+              
+            </v-row>
+          </v-container>
+         
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="showAddModal = false">Close</v-btn>
+          <v-btn v-if="this.isEdit == false" color="blue darken-1" text @click="add()">ADD</v-btn>
+          <v-btn v-else color="blue darken-1" text @click="updateTask()">UPDATE</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
+            
             <v-flex xs12>
                 
                 
@@ -12,7 +88,7 @@
     <template v-slot:default>
       <thead>
         <tr>
-  <th class="text-left">TITLE</th>
+   <th class="text-left">TITLE</th>
    <th class="text-left">SHORTDESCRIPTION</th>
    <th class="text-left">INCLUSION</th>
    <th class="text-left">EXCLUSION</th>
@@ -24,7 +100,7 @@
       </thead>
       <tbody>
         <tr v-for="datas in allTicketsForsellers" v-bind:key="datas._id">
- <td>{{datas.title}}</td>
+  <td>{{datas.title}}</td>
   <td>{{datas.shortDescription}}</td>
   <td>{{datas.inclusion}}</td>
    <td>{{datas.exclusion}}</td>
@@ -38,17 +114,12 @@
   <td><button class="btn btn-info" v-on:click="deleteTask(datas._id)">Delete</button></td>
          
         </tr>
-      
       </tbody>
     </template>
   </v-simple-table>
         </v-container>
     </div>
 </template>
-
-
-
-
 <script>
 import axios from 'axios';
 import _ from 'lodash'
